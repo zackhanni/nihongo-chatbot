@@ -15,15 +15,30 @@ const demoMessages = [
 
 export default function Home() {
   const [chats, setChats] = useState(demoMessages);
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setChats([...chats, ["user", inputValue]]);
+    setInputValue("");
+    try {
+      // connect to chatGPT and get a response
+      // setIsLoading(false);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
   return (
     <main className="flex items-center justify-center h-screen w-screen bg-gray-300">
       <section className="container">
-        <div className="card rounded-2xl pointer-events-none border-2 bg-white">
+        <div className="card rounded-2xl border-2 bg-white">
           <div className="card-header d-flex justify-center bg-info border-bottom-0 rounded-t-2xl">
             <p className="fw-bold text-white mb-0 py-2">Live AI chat</p>
           </div>
-          <div className="card-body min-h-[50svh]">
+          <div className="card-body min-h-[50svh] max-h-[80svh] overflow-y-auto">
             {/* default AI chat bubble style */}
             {/* <div className="d-flex flex-row justify-content-start mb-4">
               <p className="bg-red-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
@@ -78,29 +93,37 @@ export default function Home() {
               }
             })}
 
-            <div
-              data-mdb-input-init
-              className="form-outline pointer-events-auto"
-            >
-              <form
-                noValidate
-                // ref={formRef}
-                // onSubmit={handleSubmit}
-                className="space-y-4"
-              >
-                <div className="form-floating">
-                  <input
-                    type="message"
-                    name="entry.569456943"
-                    id="message"
-                    className="form-control form-control-lg"
-                    placeholder="Message"
-                  ></input>
-                  <label htmlFor="message">Message</label>
+            {isLoading && (
+              <div className="d-flex flex-row justify-content-start mb-4">
+                <p className="bg-red-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
+                  AI
+                </p>
+                <div className="p-3 ms-3 rounded-2xl bg-[#39c0ed33]">
+                  <p className="small mb-0">. . .</p>
                 </div>
-              </form>
-              {/*  */}
-            </div>
+              </div>
+            )}
+
+            <form
+              noValidate
+              // ref={formRef}
+              onSubmit={handleSubmit}
+              className="space-y-4"
+            >
+              <div className="form-floating">
+                <input
+                  type="message"
+                  name="message"
+                  id="message"
+                  className="form-control form-control-lg"
+                  placeholder="Message"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                ></input>
+                <label htmlFor="message">Message</label>
+              </div>
+            </form>
+            {/*  */}
           </div>
         </div>
       </section>
