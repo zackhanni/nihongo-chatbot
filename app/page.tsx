@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 // const api_key = process.env.API_KEY;
 const api_key = "";
@@ -16,6 +15,7 @@ export default function Home() {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const ref = useChatScroll(messages);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log(api_key);
@@ -80,14 +80,30 @@ export default function Home() {
       });
   }
 
+  // a new message scrols the chat to the bottom
+  function useChatScroll<T>(dep: T): React.MutableRefObject<HTMLDivElement> {
+    const ref = React.useRef<HTMLDivElement>();
+    React.useEffect(() => {
+      if (ref.current) {
+        ref.current.scrollTop = ref.current.scrollHeight;
+      }
+    }, [dep]);
+    return ref;
+  }
+
   return (
     <main className="flex items-center justify-center h-screen w-screen bg-gray-300">
       <section className="container">
         <div className="card rounded-2xl border-2 bg-white">
-          <div className="card-header d-flex justify-center bg-info border-bottom-0 rounded-t-2xl">
-            <p className="fw-bold text-white mb-0 py-2">Nihongo Chat Bot</p>
+          <div className="card-header d-flex justify-center bg-black border-bottom-0 rounded-t-2xl">
+            <p className="fw-bold text-white mb-0 py-2">
+              日本語 - Nihongo Chat Bot
+            </p>
           </div>
-          <div className="card-body min-h-[50svh] max-h-[80svh] overflow-y-auto flex flex-col justify-between">
+          <div
+            className="card-body h-[80svh] overflow-y-auto flex flex-col justify-between"
+            ref={ref}
+          >
             {messages.map((message) => {
               if (message.sender === "ChatGPT") {
                 return (
