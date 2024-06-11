@@ -6,15 +6,25 @@ import React, { useState, useEffect, useRef } from "react";
 const api_key = "";
 
 export default function Home() {
+  const now = new Date();
+  const hours = now.getHours();
+
+  const greeting =
+    hours >= 17 && hours < 4
+      ? "こんばんは!"
+      : hours < 12
+      ? "おはよう!"
+      : "こんにちは";
+
   const [messages, setMessages] = useState([
     {
-      message:
-        "Hello and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation.",
+      message: `${greeting} and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation.`,
       sender: "ChatGPT",
     },
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const ref = useChatScroll(messages);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
