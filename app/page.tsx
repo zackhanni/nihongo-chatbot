@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export default function Home() {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  if (!apiKey) {
-    throw new Error("NEXT_PUBLIC_API_KEY must be defined");
-  }
+  // if (!apiKey) {
+  //   throw new Error("NEXT_PUBLIC_API_KEY must be defined");
+  // }
   const now = new Date();
   const hours = now.getHours();
   const greeting =
