@@ -8,10 +8,8 @@ export default function Home() {
   if (!apiKey) {
     throw new Error("NEXT_PUBLIC_API_KEY must be defined");
   }
-
   const now = new Date();
   const hours = now.getHours();
-
   const greeting =
     hours >= 17 && hours < 4
       ? "こんばんは"
@@ -27,7 +25,6 @@ export default function Home() {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const ref = useChatScroll(messages);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -51,6 +48,10 @@ export default function Home() {
     sender: string;
     message: string;
   }
+
+  const toggleSettings = () => {
+    //
+  };
 
   async function processMessageToChatGPT(chatMessages: Message[]) {
     let apiMessages = chatMessages.map((messageObject) => {
@@ -101,10 +102,6 @@ export default function Home() {
       });
   }
 
-  // const handleTextToSpeech = () => {
-  //   return <TextToSpeech textInput="testing 1 2 3 ko ni chi wa bitches" />;
-  // };
-
   // a new message scrolls the chat to the bottom
   function useChatScroll<T>(dep: T): React.MutableRefObject<HTMLDivElement> {
     const ref = React.useRef<HTMLDivElement>(null);
@@ -120,10 +117,14 @@ export default function Home() {
     <main className="flex items-center justify-center h-screen w-screen bg-gray-300">
       <section className="container">
         <div className="card rounded-2xl border-2 bg-white">
-          <div className="card-header d-flex justify-center bg-primary border-bottom-0 rounded-t-2xl">
+          <div className="card-header d-flex justify-between bg-primary border-bottom-0 rounded-t-2xl items-center">
             <p className="fw-bold text-white mb-0 py-3">
               日本語 - Nihongo Chat Bot
             </p>
+            <i
+              className="bi bi-gear text-2xl text-white"
+              onClick={toggleSettings}
+            ></i>
           </div>
           <div
             className="card-body h-[80svh] overflow-y-auto flex flex-col justify-between"
@@ -199,12 +200,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* <button
-        className="bg-red-400 rounded-2xl text-white font-bold"
-        onClick={handleTextToSpeech}
-      >
-        Text to speech
-      </button> */}
     </main>
   );
 }
