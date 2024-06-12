@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import TextToSpeech from "./components/TextToSpeech";
+import Link from "next/link";
 
 export default function Home() {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
@@ -27,7 +27,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [polite, setPolite] = useState(true);
-  const [showKanji, setShowKanji] = useState(true);
+  const [showKanji, setShowKanji] = useState(false);
   const ref = useChatScroll(messages);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -52,10 +52,6 @@ export default function Home() {
     message: string;
   }
 
-  const toggleSettings = () => {
-    //
-  };
-
   async function processMessageToChatGPT(chatMessages: Message[]) {
     let apiMessages = chatMessages.map((messageObject) => {
       let role = "";
@@ -70,8 +66,13 @@ export default function Home() {
     // setting the AI tone/role for responses
     const systemMessage = {
       role: "system",
-      content:
-        "You are a helpful AI designed to assist users in practicing their Japanese language skills. Engage in a conversation with short, responses in Japanese. Keep the tone friendly and encouraging. Use no or few complex kanji when possible",
+      content: `You are a helpful AI designed to assist users in practicing their Japanese language skills. Engage in a ${
+        polite ? "polite" : "casual"
+      } conversation with short, responses in Japanese. Keep the tone friendly and encouraging. ${
+        showKanji
+          ? "Use simple or common kanji characters when necessary."
+          : "Don't use any kanji characters."
+      }`,
     };
 
     const apiRequestBody = {
@@ -99,8 +100,6 @@ export default function Home() {
             sender: "ChatGPT",
           },
         ]);
-        // TextToSpeech(data.choices[0].message.content)
-        // TextToSpeech("test");
         setIsLoading(false);
       });
   }
@@ -121,7 +120,7 @@ export default function Home() {
       <section className="container">
         <div className="card rounded-2xl border-2 bg-white">
           <div className="card-header d-flex justify-between bg-primary border-bottom-0 rounded-t-2xl items-center">
-            <p className="fw-bold text-white mb-0 py-3">
+            <p className="fw-semibold text-white mb-0 py-3">
               日本語 - Nihongo Chat Bot
             </p>
             <i // Settings Gear
@@ -132,13 +131,13 @@ export default function Home() {
           <div // Settings
             className={` ${
               showSettings ? "block" : "hidden"
-            } flex flex-col bg-primary px-4 items-end`}
+            } flex flex-col bg-primary px-4 items-end py-4 border-t-2 `}
           >
-            <p className="text-2xl text-white mb-0 font-bold underline">
+            <p className="text-lg text-white mb-2 font-semibold underline">
               Settings
             </p>
             <div className="flex text-white items-center just">
-              <p className="text-lg pr-2 mb-0">Show Kanji</p>
+              <p className="pr-4 mb-0">Less Kanji / More Kanji</p>
               <i
                 className={`bi ${
                   showKanji ? "bi-toggle-on" : "bi-toggle-off"
@@ -147,7 +146,7 @@ export default function Home() {
               ></i>
             </div>
             <div className="flex text-white items-center just">
-              <p className="text-lg pr-2 mb-0">Casual / Polite</p>
+              <p className="pr-4 mb-0">Casual / Polite</p>
               <i
                 className={`bi ${
                   polite ? "bi-toggle-on" : "bi-toggle-off"
@@ -228,6 +227,17 @@ export default function Home() {
               </div>
             </form>
           </div>
+        </div>
+        <div className="w-full text-center pt-4">
+          <Link
+            href={
+              "https://translate.google.com/?hl=en&sl=ja&tl=en&op=translate"
+            }
+            target="_blank"
+            className="text-center"
+          >
+            Google Translate
+          </Link>
         </div>
       </section>
     </main>
