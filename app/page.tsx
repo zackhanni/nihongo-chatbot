@@ -25,6 +25,9 @@ export default function Home() {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [polite, setPolite] = useState(true);
+  const [showKanji, setShowKanji] = useState(true);
   const ref = useChatScroll(messages);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -121,12 +124,39 @@ export default function Home() {
             <p className="fw-bold text-white mb-0 py-3">
               日本語 - Nihongo Chat Bot
             </p>
-            <i
+            <i // Settings Gear
               className="bi bi-gear text-2xl text-white"
-              onClick={toggleSettings}
+              onClick={() => setShowSettings(!showSettings)}
             ></i>
           </div>
-          <div
+          <div // Settings
+            className={` ${
+              showSettings ? "block" : "hidden"
+            } flex flex-col bg-primary px-4 items-end`}
+          >
+            <p className="text-2xl text-white mb-0 font-bold underline">
+              Settings
+            </p>
+            <div className="flex text-white items-center just">
+              <p className="text-lg pr-2 mb-0">Show Kanji</p>
+              <i
+                className={`bi ${
+                  showKanji ? "bi-toggle-on" : "bi-toggle-off"
+                } text-4xl`}
+                onClick={() => setShowKanji(!showKanji)}
+              ></i>
+            </div>
+            <div className="flex text-white items-center just">
+              <p className="text-lg pr-2 mb-0">Casual / Polite</p>
+              <i
+                className={`bi ${
+                  polite ? "bi-toggle-on" : "bi-toggle-off"
+                } text-4xl`}
+                onClick={() => setPolite(!polite)}
+              ></i>
+            </div>
+          </div>
+          <div // Card Body
             className="card-body h-[80svh] overflow-y-auto flex flex-col justify-between"
             ref={ref}
           >
