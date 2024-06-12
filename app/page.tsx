@@ -89,6 +89,7 @@ export default function Home() {
       body: JSON.stringify(apiRequestBody),
     })
       .then((data) => {
+        console.log(systemMessage); // is systemMessage even being used? test with french or something.
         return data.json();
       })
       .then((data) => {
@@ -117,90 +118,94 @@ export default function Home() {
 
   return (
     <main className="flex items-center justify-center h-screen w-screen bg-gray-300">
-      <section className="container">
-        <div className="card rounded-2xl border-2 bg-white">
-          <div className="card-header d-flex justify-between bg-primary border-bottom-0 rounded-t-2xl items-center">
-            <p className="fw-semibold text-white mb-0 py-3">
-              日本語 - Nihongo Chat Bot
-            </p>
-            <i // Settings Gear
-              className="bi bi-gear text-2xl text-white"
-              onClick={() => setShowSettings(!showSettings)}
-            ></i>
-          </div>
-          <div // Settings
-            className={` ${
-              showSettings ? "block" : "hidden"
-            } flex flex-col bg-primary px-4 items-end py-4 border-t-2 `}
-          >
-            <p className="text-lg text-white mb-2 font-semibold underline">
-              Settings
-            </p>
-            <div className="flex text-white items-center just">
-              <p className="pr-4 mb-0">Less Kanji / More Kanji</p>
-              <i
-                className={`bi ${
-                  showKanji ? "bi-toggle-on" : "bi-toggle-off"
-                } text-4xl`}
-                onClick={() => setShowKanji(!showKanji)}
+      <section className="">
+        <div className="card rounded-2xl border-2 bg-white min-h-screen ">
+          <div className="card-header bg-primary border-bottom-0 rounded-t-2xl">
+            <div className="flex justify-between items-center">
+              <p className="fw-semibold text-white mb-0 py-3">
+                日本語 - Nihongo Chat Bot
+              </p>
+              <i // Settings Gear
+                className="bi bi-gear text-2xl text-white"
+                onClick={() => setShowSettings(!showSettings)}
               ></i>
             </div>
-            <div className="flex text-white items-center just">
-              <p className="pr-4 mb-0">Casual / Polite</p>
-              <i
-                className={`bi ${
-                  polite ? "bi-toggle-on" : "bi-toggle-off"
-                } text-4xl`}
-                onClick={() => setPolite(!polite)}
-              ></i>
+            <div // Settings
+              className={` ${
+                showSettings ? "block" : "hidden"
+              } flex flex-col px-4 items-end py-4 border-t-2 `}
+            >
+              <p className="text-lg text-white mb-2 font-semibold">Settings</p>
+              <div className="flex text-white items-center just">
+                <p className="pr-4 mb-0">Less Kanji / More Kanji</p>
+                <i
+                  className={`bi ${
+                    showKanji ? "bi-toggle-on" : "bi-toggle-off"
+                  } text-4xl`}
+                  onClick={() => setShowKanji(!showKanji)}
+                ></i>
+              </div>
+              <div className="flex text-white items-center just">
+                <p className="pr-4 mb-0">Casual / Polite</p>
+                <i
+                  className={`bi ${
+                    polite ? "bi-toggle-on" : "bi-toggle-off"
+                  } text-4xl`}
+                  onClick={() => setPolite(!polite)}
+                ></i>
+              </div>
             </div>
           </div>
+
           <div // Card Body
-            className="card-body h-[80svh] overflow-y-auto flex flex-col justify-between"
+            className="card-body flex flex-col justify-between"
             ref={ref}
           >
-            {messages.map((message) => {
-              if (message.sender === "ChatGPT") {
-                return (
-                  <div
-                    key={message.message}
-                    className="d-flex flex-row justify-content-start mb-4"
-                  >
-                    <p className="bg-red-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
-                      AI
-                    </p>
-                    <div className="p-3 ms-3 rounded-2xl bg-[#39c0ed33]">
-                      <p className="small mb-0">{message.message}</p>
+            <div className="overflow-y-auto h-full">
+              {messages.map((message) => {
+                if (message.sender === "ChatGPT") {
+                  return (
+                    <div
+                      key={message.message}
+                      className="d-flex flex-row justify-content-start mb-4"
+                    >
+                      <p className="bg-red-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
+                        AI
+                      </p>
+                      <div className="p-3 ms-3 rounded-2xl bg-[#39c0ed33]">
+                        <p className="small mb-0">{message.message}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              } else {
-                return (
-                  <div
-                    key={message.message}
-                    className="d-flex flex-row justify-content-end mb-4"
-                  >
-                    <div className="p-3 me-3 border rounded-2xl bg-[#fbfbfb;]">
-                      <p className="small mb-0">{message.message}</p>
+                  );
+                } else {
+                  return (
+                    <div
+                      key={message.message}
+                      className="d-flex flex-row justify-content-end mb-4"
+                    >
+                      <div className="p-3 me-3 border rounded-2xl bg-[#fbfbfb;]">
+                        <p className="small mb-0">{message.message}</p>
+                      </div>
+                      <p className="bg-blue-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
+                        You
+                      </p>
                     </div>
-                    <p className="bg-blue-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
-                      You
-                    </p>
+                  );
+                }
+              })}
+              {isLoading && (
+                <div className="d-flex flex-row justify-content-start mb-4">
+                  <p className="bg-red-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
+                    AI
+                  </p>
+                  <div className="p-3 ms-3 rounded-2xl bg-[#39c0ed33]">
+                    <p className="small mb-0">. . .</p>
                   </div>
-                );
-              }
-            })}
-            {isLoading && (
-              <div className="d-flex flex-row justify-content-start mb-4">
-                <p className="bg-red-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
-                  AI
-                </p>
-                <div className="p-3 ms-3 rounded-2xl bg-[#39c0ed33]">
-                  <p className="small mb-0">. . .</p>
                 </div>
-              </div>
-            )}
-            <form
+              )}
+            </div>
+
+            <form // form - bottom section
               noValidate
               // ref={formRef}
               onSubmit={handleSubmit}
@@ -224,20 +229,20 @@ export default function Home() {
                 >
                   Send Message
                 </button>
+              </div>{" "}
+              <div className="w-full text-center">
+                <Link
+                  href={
+                    "https://translate.google.com/?hl=en&sl=ja&tl=en&op=translate"
+                  }
+                  target="_blank"
+                  className="text-center"
+                >
+                  Google Translate
+                </Link>
               </div>
             </form>
           </div>
-        </div>
-        <div className="w-full text-center pt-4">
-          <Link
-            href={
-              "https://translate.google.com/?hl=en&sl=ja&tl=en&op=translate"
-            }
-            target="_blank"
-            className="text-center"
-          >
-            Google Translate
-          </Link>
         </div>
       </section>
     </main>
