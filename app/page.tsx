@@ -1,24 +1,23 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-
-// const api_key = process.env.API_KEY;
-const api_key = "";
+import React, { useState } from "react";
+import TextToSpeech from "./components/TextToSpeech";
 
 export default function Home() {
+  const api_key = "NEXT_PUBLIC_API_KEY"; // formatted as variable to hide code when compiling.
   const now = new Date();
   const hours = now.getHours();
 
   const greeting =
     hours >= 17 && hours < 4
-      ? "こんばんは!"
+      ? "こんばんは"
       : hours < 12
-      ? "おはよう!"
+      ? "おはよう"
       : "こんにちは";
 
   const [messages, setMessages] = useState([
     {
-      message: `${greeting} and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation.`,
+      message: `${greeting}! and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation. 以下に書いてください。`,
       sender: "ChatGPT",
     },
   ]);
@@ -28,7 +27,7 @@ export default function Home() {
   const ref = useChatScroll(messages);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(api_key);
+    // console.log(api_key);
     e.preventDefault();
     setIsLoading(true);
     setInputValue(""); // clear input field
@@ -44,7 +43,12 @@ export default function Home() {
     await processMessageToChatGPT(newMessages);
   };
 
-  async function processMessageToChatGPT(chatMessages) {
+  interface Message {
+    sender: string;
+    message: string;
+  }
+
+  async function processMessageToChatGPT(chatMessages: Message[]) {
     let apiMessages = chatMessages.map((messageObject) => {
       let role = "";
       if (messageObject.sender === "ChatGPT") {
@@ -55,6 +59,7 @@ export default function Home() {
       return { role: role, content: messageObject.message };
     });
 
+    // setting the AI tone/role for responses
     const systemMessage = {
       role: "system",
       content:
@@ -69,7 +74,7 @@ export default function Home() {
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + api_key,
+        Authorization: "Bearer " + process.env[api_key],
         "Content-Type": "application/json",
       },
       body: JSON.stringify(apiRequestBody),
@@ -86,19 +91,25 @@ export default function Home() {
             sender: "ChatGPT",
           },
         ]);
+        // TextToSpeech(data.choices[0].message.content)
+        // TextToSpeech("test");
         setIsLoading(false);
       });
   }
 
-  // a new message scrols the chat to the bottom
+  // const handleTextToSpeech = () => {
+  //   return <TextToSpeech textInput="testing 1 2 3 ko ni chi wa bitches" />;
+  // };
+
+  // a new message scrolls the chat to the bottom
   function useChatScroll<T>(dep: T): React.MutableRefObject<HTMLDivElement> {
-    const ref = React.useRef<HTMLDivElement>();
+    const ref = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
       if (ref.current) {
         ref.current.scrollTop = ref.current.scrollHeight;
       }
     }, [dep]);
-    return ref;
+    return ref as React.MutableRefObject<HTMLDivElement>;
   }
 
   return (
@@ -177,6 +188,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* <button
+        className="bg-red-400 rounded-2xl text-white font-bold"
+        onClick={handleTextToSpeech}
+      >
+        Text to speech
+      </button> */}
     </main>
   );
 }
