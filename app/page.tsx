@@ -4,7 +4,11 @@ import React, { useState } from "react";
 import TextToSpeech from "./components/TextToSpeech";
 
 export default function Home() {
-  const api_key = "NEXT_PUBLIC_API_KEY"; // formatted as variable to hide code when compiling.
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  if (!apiKey) {
+    throw new Error("NEXT_PUBLIC_API_KEY must be defined");
+  }
+
   const now = new Date();
   const hours = now.getHours();
 
@@ -63,7 +67,7 @@ export default function Home() {
     const systemMessage = {
       role: "system",
       content:
-        "You are a helpful AI designed to assist users in practicing their Japanese language skills. Engage in a conversation with short, 1 to 2 sentence responses in Japanese. Make sure to correct any mistakes politely and provide the correct way to say things if necessary. Keep the tone friendly and encouraging.",
+        "You are a helpful AI designed to assist users in practicing their Japanese language skills. Engage in a conversation with short, responses in Japanese. Keep the tone friendly and encouraging. Use no or few complex kanji when possible",
     };
 
     const apiRequestBody = {
@@ -74,7 +78,7 @@ export default function Home() {
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + process.env[api_key],
+        Authorization: "Bearer " + apiKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(apiRequestBody),
@@ -116,8 +120,8 @@ export default function Home() {
     <main className="flex items-center justify-center h-screen w-screen bg-gray-300">
       <section className="container">
         <div className="card rounded-2xl border-2 bg-white">
-          <div className="card-header d-flex justify-center bg-black border-bottom-0 rounded-t-2xl">
-            <p className="fw-bold text-white mb-0 py-2">
+          <div className="card-header d-flex justify-center bg-primary border-bottom-0 rounded-t-2xl">
+            <p className="fw-bold text-white mb-0 py-3">
               日本語 - Nihongo Chat Bot
             </p>
           </div>
@@ -182,7 +186,14 @@ export default function Home() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                 ></input>
-                <label htmlFor="message">Message</label>
+                <label htmlFor="message">Type a message here</label>
+                <button
+                  type="submit"
+                  className="btn btn-primary mt-3 py-3 uppercase font-semibold w-full"
+                  disabled={isLoading}
+                >
+                  Send Message
+                </button>
               </div>
             </form>
           </div>
