@@ -34,6 +34,7 @@ export default function Home() {
     // console.log(api_key);
     e.preventDefault();
     setIsLoading(true);
+    setShowSettings(false);
     setInputValue(""); // clear input field
 
     const newMessage = {
