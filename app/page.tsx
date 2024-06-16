@@ -5,9 +5,6 @@ import Link from "next/link";
 
 export default function Home() {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  // if (!apiKey) {
-  //   throw new Error("NEXT_PUBLIC_API_KEY must be defined");
-  // }
   const now = new Date();
   const hours = now.getHours();
   const greeting =
@@ -22,6 +19,30 @@ export default function Home() {
       message: `${greeting}! and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation. 以下に書いてください。`,
       sender: "ChatGPT",
     },
+    // {
+    //   message: ` 22222 this is the demo message representing the user. its has words like blah and testing`,
+    //   sender: "user",
+    // },
+    // {
+    //   message: `333333${greeting}! and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation. 以下に書いてください。`,
+    //   sender: "ChatGPT",
+    // },
+    // {
+    //   message: `444444${greeting}! and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation. 以下に書いてください。`,
+    //   sender: "user",
+    // },
+    // {
+    //   message: `555555${greeting}! and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation. 以下に書いてください。`,
+    //   sender: "ChatGPT",
+    // },
+    // {
+    //   message: `666666${greeting}! and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation. 以下に書いてください。`,
+    //   sender: "user",
+    // },
+    // {
+    //   message: `777777${greeting}! and thank you for visiting Nihongo AI Chat! Please type below to begin the conversation. 以下に書いてください。`,
+    //   sender: "ChatGPT",
+    // },
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -118,42 +139,56 @@ export default function Home() {
   }
 
   return (
-    <main className="flex items-center justify-center h-screen w-screen bg-gray-300">
-      <section className="">
-        <div className="card rounded-2xl border-2 bg-white min-h-screen ">
-          <div className="card-header bg-primary border-bottom-0 rounded-t-2xl">
+    <main className="">
+      <section className="bg-[#bfe1b4] text-[#4b4b4b]">
+        <div className="card rounded-2xl border-2 !border-[#39842a] min-h-screen max-w-screen-md mx-auto">
+          <div className="card-header !bg-[#bfe1b4] !border-b-8 !border-[#39842a] rounded-t-2xl sticky top-0 w-full">
             <div className="flex justify-between items-center">
-              <p className="fw-semibold text-white mb-0 py-3">
-                日本語 - Nihongo Chat Bot
-              </p>
+              <p className="fw-semibold mb-0 py-3">日本語 - Nihongo Chat Bot</p>
               <i // Settings Gear
-                className="bi bi-gear text-2xl text-white"
+                className="bi bi-gear-fill text-2xl"
                 onClick={() => setShowSettings(!showSettings)}
               ></i>
             </div>
             <div // Settings
-              className={` ${
-                showSettings ? "block" : "hidden"
-              } flex flex-col px-4 items-end py-4 border-t-2 `}
+              className={` ${showSettings ? "block pt-2" : "hidden"} `}
             >
-              <p className="text-lg text-white mb-2 font-semibold">Settings</p>
-              <div className="flex text-white items-center just">
-                <p className="pr-4 mb-0">Less Kanji / More Kanji</p>
-                <i
-                  className={`bi ${
-                    showKanji ? "bi-toggle-on" : "bi-toggle-off"
-                  } text-4xl`}
-                  onClick={() => setShowKanji(!showKanji)}
-                ></i>
+              <div className="flex flex-col items-end border-t-2 border-[#39842a] py-4">
+                <p className="text-lg mb-2 font-semibold">Settings</p>
+                <div className="flex items-center just">
+                  <p className="pr-4 mb-0">Less Kanji / More Kanji</p>
+                  <i
+                    className={`bi ${
+                      showKanji ? "bi-toggle-on" : "bi-toggle-off"
+                    } text-4xl`}
+                    onClick={() => setShowKanji(!showKanji)}
+                  ></i>
+                </div>
+                <div className="flex items-center just">
+                  <p className="pr-4 mb-0">Casual / Polite</p>
+                  <i
+                    className={`bi ${
+                      polite ? "bi-toggle-on" : "bi-toggle-off"
+                    } text-4xl`}
+                    onClick={() => setPolite(!polite)}
+                  ></i>
+                </div>
               </div>
-              <div className="flex text-white items-center just">
-                <p className="pr-4 mb-0">Casual / Polite</p>
-                <i
-                  className={`bi ${
-                    polite ? "bi-toggle-on" : "bi-toggle-off"
-                  } text-4xl`}
-                  onClick={() => setPolite(!polite)}
-                ></i>
+              <div className="flex flex-col items-end border-t-2 border-[#39842a] py-4">
+                <p className="text-lg mb-2 font-semibold">Having Problems?</p>
+                <div className="flex items-center just">
+                  <p className="">
+                    Please contact Zack from{" "}
+                    <a
+                      href="https://www.webwizarddev.com/"
+                      className="text-[#4b4b4b]"
+                      target="_blank"
+                    >
+                      Web Wizard Dev.
+                    </a>{" "}
+                    Your feedback makes our apps better! Thank you.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -171,10 +206,10 @@ export default function Home() {
                       key={message.message}
                       className="d-flex flex-row justify-content-start mb-4"
                     >
-                      <p className="bg-red-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
+                      <p className="bg-[#ea9cd6] size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
                         AI
                       </p>
-                      <div className="p-3 ms-3 rounded-2xl bg-[#39c0ed33]">
+                      <div className="p-3 ms-3 rounded-2xl bg-[#e9c4e33e] border-2 border-[#ea9cd6]">
                         <p className="small mb-0">{message.message}</p>
                       </div>
                     </div>
@@ -185,10 +220,10 @@ export default function Home() {
                       key={message.message}
                       className="d-flex flex-row justify-content-end mb-4"
                     >
-                      <div className="p-3 me-3 border rounded-2xl bg-[#fbfbfb;]">
+                      <div className="p-3 me-3 rounded-2xl bg-[#bfe1b4] border-2 border-[#39842a] ">
                         <p className="small mb-0">{message.message}</p>
                       </div>
-                      <p className="bg-blue-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
+                      <p className="bg-[#39842a] size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
                         You
                       </p>
                     </div>
@@ -197,10 +232,10 @@ export default function Home() {
               })}
               {isLoading && (
                 <div className="d-flex flex-row justify-content-start mb-4">
-                  <p className="bg-red-500 size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
+                  <p className="bg-[#ea9cd6] size-10 px-3 rounded-full text-white items-center justify-center flex text-bold text-xl">
                     AI
                   </p>
-                  <div className="p-3 ms-3 rounded-2xl bg-[#39c0ed33]">
+                  <div className="p-3 ms-3 rounded-2xl bg-[#e9c4e33e] #4b4b4b">
                     <p className="small mb-0">. . .</p>
                   </div>
                 </div>
@@ -211,7 +246,7 @@ export default function Home() {
               noValidate
               // ref={formRef}
               onSubmit={handleSubmit}
-              className="space-y-4"
+              className="space-y-4 sticky bottom-0 bg-white"
             >
               <div className="form-floating">
                 <input
@@ -226,7 +261,7 @@ export default function Home() {
                 <label htmlFor="message">Type a message here</label>
                 <button
                   type="submit"
-                  className="btn btn-primary mt-3 py-3 uppercase font-semibold w-full"
+                  className="btn btn-primary mt-3 py-3 uppercase !font-semibold w-full "
                   disabled={isLoading}
                 >
                   Send Message
@@ -238,9 +273,12 @@ export default function Home() {
                     "https://translate.google.com/?hl=en&sl=ja&tl=en&op=translate"
                   }
                   target="_blank"
-                  className="text-center"
+                  className="text-center text-[#4b4b4b]"
                 >
-                  Google Translate
+                  Google Translate{" "}
+                  <i // Settings Gear
+                    className="bi bi-translate text-xl"
+                  ></i>
                 </Link>
               </div>
             </form>
