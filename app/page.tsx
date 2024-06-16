@@ -142,10 +142,12 @@ export default function Home() {
     <main className="">
       <section className="bg-[#bfe1b4] text-[#4b4b4b]">
         <div className="card rounded-2xl border-2 !border-[#39842a] min-h-screen max-w-screen-md mx-auto">
-          <div className="card-header !bg-[#bfe1b4] !border-b-8 !border-[#39842a] rounded-t-2xl sticky top-0 w-full">
+          <div // Card header
+            className="card-header !bg-[#bfe1b4] !border-b-8 !border-[#39842a] rounded-t-2xl sticky top-0 w-full"
+          >
             <div className="flex justify-between items-center">
               <p className="fw-semibold mb-0 py-3">日本語 - Nihongo Chat Bot</p>
-              <i // Settings Gear
+              <i
                 className={`bi bi-gear-fill text-2xl duration-300 ${
                   showSettings ? "rotate-90" : ""
                 }`}
@@ -285,6 +287,47 @@ export default function Home() {
               </div>
             </form>
           </div>
+          {/* testing out alt form to better overlap */}
+          {/* <form // Card form
+            noValidate
+            // ref={formRef}
+            onSubmit={handleSubmit}
+            className="space-y-4 sticky bottom-0 px-3 pb-3 rounded-b-2xl"
+          >
+            <div className="form-floating">
+              <input
+                type="message"
+                name="message"
+                id="message"
+                className="form-control form-control-lg"
+                placeholder="Message"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              ></input>
+              <label htmlFor="message">Type a message here</label>
+              <button
+                type="submit"
+                className="btn btn-primary mt-3 py-3 uppercase !font-semibold w-full "
+                disabled={isLoading}
+              >
+                Send Message
+              </button>
+            </div>{" "}
+            <div className="w-full text-center">
+              <Link
+                href={
+                  "https://translate.google.com/?hl=en&sl=ja&tl=en&op=translate"
+                }
+                target="_blank"
+                className="text-center text-[#4b4b4b]"
+              >
+                Google Translate{" "}
+                <i // Settings Gear
+                  className="bi bi-translate text-xl"
+                ></i>
+              </Link>
+            </div>
+          </form> */}
         </div>
       </section>
     </main>
