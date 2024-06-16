@@ -161,6 +161,7 @@ export default function Home() {
             className="card-body flex flex-col justify-between"
             ref={ref}
           >
+            {/* make sure overflow is working properly. add more starter text to  default messages */}
             <div className="overflow-y-auto h-full">
               {messages.map((message) => {
                 if (message.sender === "ChatGPT") {
