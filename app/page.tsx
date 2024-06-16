@@ -146,7 +146,9 @@ export default function Home() {
             <div className="flex justify-between items-center">
               <p className="fw-semibold mb-0 py-3">日本語 - Nihongo Chat Bot</p>
               <i // Settings Gear
-                className="bi bi-gear-fill text-2xl"
+                className={`bi bi-gear-fill text-2xl duration-300 ${
+                  showSettings ? "rotate-90" : ""
+                }`}
                 onClick={() => setShowSettings(!showSettings)}
               ></i>
             </div>
